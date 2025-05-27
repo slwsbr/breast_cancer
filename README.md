@@ -24,27 +24,33 @@ Menurut World Health Organization (WHO), sekitar 2,3 juta perempuan didiagnosis 
 2. Menilai performa model menggunakan metrik evaluasi seperti akurasi, precision, recall, dan F1-score.
 
 ### Solution Statements
-
-* Membangun model klasifikasi menggunakan dua algoritma berbeda: **Logistic Regression** dan **Random Forest Classifier**.
-* Melakukan **hyperparameter tuning** pada model Random Forest untuk meningkatkan performa klasifikasi.
-* Memilih model terbaik berdasarkan metrik evaluasi (F1-score dan recall — karena dalam konteks medis, false negative harus diminimalkan).
+Untuk mencapai tujuan tersebut, dua pendekatan digunakan:
+1. **K-Nearest Neighbors (KNN):** Algoritma berbasis kedekatan jarak antar data.
+2. **Logistic Regression (LogReg):** Algoritma linier yang menghitung probabilitas klasifikasi biner.
+Kedua model akan diuji dan dievaluasi menggunakan metrik seperti akurasi, presisi, recall, dan F1-score. Hyperparameter tuning dilakukan untuk meningkatkan performa model.
 
 ---
 
 ## 📌 Data Understanding
 
-Dataset yang digunakan adalah **Breast Cancer Wisconsin Diagnostic Dataset**, yang tersedia di UCI Machine Learning Repository:
-📥 [Link dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29)
+Dataset yang digunakan berasal dari Kaggle: [https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download]
 
-Dataset ini terdiri dari 569 sampel data dan 30 fitur numerik hasil pemeriksaan mikroskopik sel tumor. Setiap sampel memiliki label diagnosis:
+### **Jumlah dan Struktur Data**
 
-* `M` (Malignant – ganas)
-* `B` (Benign – jinak)
+Dataset terdiri dari 569 baris dan 33 kolom (termasuk ID dan diagnosis).
 
-### Variabel-variabel dalam dataset:
+### **Fitur**
 
-* `radius_mean`, `texture_mean`, `perimeter_mean`, ..., `fractal_dimension_worst`: fitur statistik dari bentuk dan tekstur sel.
-* `diagnosis`: label target (M atau B).
+* **ID**: Identifikasi unik pasien (dihapus karena tidak relevan).
+* **Diagnosis**: Target klasifikasi: M (malignant) atau B (benign).
+* **30 fitur numerik** hasil ekstraksi dari gambar biopsi digital:
+
+  * radius\_mean, texture\_mean, perimeter\_mean, area\_mean, dll.
+
+### **Visualisasi Data dan EDA**
+
+* Distribusi kelas target: sekitar 62% benign dan 38% malignant.
+* Visualisasi distribusi tiap fitur dilakukan menggunakan histogram.
 
 ---
 
@@ -53,12 +59,12 @@ Dataset ini terdiri dari 569 sampel data dan 30 fitur numerik hasil pemeriksaan 
 Langkah-langkah yang dilakukan:
 
 1. **Drop kolom yang tidak relevan**, seperti `id` dan `Unnamed: 32`.
-2. **Label encoding** untuk variabel target: `M` → 1 (ganas), `B` → 0 (jinak).
-3. **Feature scaling** menggunakan **StandardScaler** karena sebagian besar model ML sensitif terhadap skala data.
-4. **Split data** menjadi 80% train dan 20% test set untuk evaluasi model.
+2. **Menghapus duplikat.**
+3. **Label encoding** untuk variabel target: `M` → 1 (ganas), `B` → 0 (jinak).
+4. **Feature scaling** menggunakan **StandardScaler** karena sebagian besar model ML sensitif terhadap skala data.
+5. **Split data** menjadi 80% train dan 20% test set untuk evaluasi model.
 
 📌 *Alasan:*
-
 * Feature scaling penting untuk model seperti Logistic Regression agar konvergen dengan benar.
 * Data split mencegah overfitting dan memungkinkan evaluasi performa model secara objektif.
 
@@ -66,27 +72,33 @@ Langkah-langkah yang dilakukan:
 
 ## 📌 Modeling
 
-Dua algoritma digunakan untuk membandingkan performa:
+### **1. K-Nearest Neighbors (KNN)**
 
-### 1. Logistic Regression
+* Model KNN digunakan dengan parameter default awal `n_neighbors=5`.
+* Dilakukan tuning hyperparameter menggunakan GridSearchCV:
 
-* Algoritma baseline yang sederhana dan cepat.
-* Tidak memerlukan banyak tuning, cocok sebagai pembanding awal.
+  * `n_neighbors`: \[3, 5, 7, 9, 11]
+  * `weights`: \['uniform', 'distance']
+  * `metric`: \['euclidean', 'manhattan', 'minkowski']
 
-### 2. Random Forest Classifier
+### **2. Logistic Regression (LogReg)**
 
-* Algoritma ensambel yang kuat dan mampu menangani non-linearitas.
-* Dilakukan **Grid Search** untuk tuning parameter `n_estimators`, `max_depth`, dan `min_samples_split`.
+* Digunakan model LogisticRegression dari `sklearn.linear_model`.
+* Hyperparameter tuning dilakukan:
 
-📌 *Kelebihan:*
+  * `C`: \[0.01, 0.1, 1, 10, 100] (regularisasi)
+  * `solver`: \['liblinear', 'lbfgs']
 
-* Logistic Regression: mudah diinterpretasi.
-* Random Forest: akurasi tinggi, mampu menangani fitur kompleks.
+### **Kelebihan dan Kekurangan**
 
-📌 *Kekurangan:*
+* **KNN**:
 
-* Logistic Regression: asumsi linieritas.
-* Random Forest: interpretabilitas lebih rendah dibanding model linier.
+  * (+) Mudah diimplementasikan, interpretasi intuitif.
+  * (-) Lambat saat prediksi, sensitif terhadap fitur yang tidak diskalakan.
+* **Logistic Regression**:
+
+  * (+) Cepat, interpretatif, cocok untuk klasifikasi biner.
+  * (-) Cenderung underfit pada data non-linear.
 
 ---
 
@@ -101,11 +113,12 @@ Metrik evaluasi:
 
 ### Hasil evaluasi (contoh):
 
-| Model               | Akurasi | Precision | Recall | F1-Score |
-| ------------------- | ------- | --------- | ------ | -------- |
-| Logistic Regression | 96.5%   | 95.2%     | 95.8%  | 95.5%    |
-| Random Forest       | 98.2%   | 97.6%     | 98.4%  | 98.0%    |
+| Model               | Akurasi  | Precision | Recall  | F1-Score  |
+| ------------------- | -------  | --------- | ------  | --------  |
+| Logistic Regression | 99.12%   | 99.31%    | 98.84%  | 99.06%    |
+|KNN                  | 96.49%   | 96.27%    | 96.27%  | 96.27%    |
 
-📌 *Kesimpulan:*
-Model **Random Forest** menunjukkan performa terbaik, terutama dalam recall yang penting untuk mencegah false negative dalam deteksi kanker.
+### **Model Terbaik**
+
+Berdasarkan hasil evaluasi, **Logistic Regression** memiliki performa lebih tinggi dari KNN. Oleh karena itu, Logistic Regression dipilih sebagai model terbaik untuk digunakan dalam sistem deteksi dini kanker payudara.
 
