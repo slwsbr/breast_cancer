@@ -1,6 +1,6 @@
 # Laporan Proyek Machine Learning - Salwa Sabira
 
-## 📌 Domain Proyek
+## Domain Proyek
 
 Kanker payudara merupakan salah satu penyebab utama kematian akibat kanker pada perempuan di seluruh dunia. Deteksi dini sangat penting untuk meningkatkan tingkat kelangsungan hidup dan efektivitas pengobatan. Dengan kemajuan teknologi dan ketersediaan data medis, penerapan machine learning dalam deteksi kanker payudara kini menjadi solusi yang efisien dan akurat. Breast Cancer Wisconsin Dataset memberikan data karakteristik sel tumor yang dapat digunakan untuk mengklasifikasikan tumor sebagai **jinak (benign)** atau **ganas (malignant)**.
 
@@ -11,7 +11,7 @@ Menurut World Health Organization (WHO), sekitar 2,3 juta perempuan didiagnosis 
 
 ---
 
-## 📌 Business Understanding
+## Business Understanding
 
 ### Problem Statements
 
@@ -31,7 +31,7 @@ Kedua model akan diuji dan dievaluasi menggunakan metrik seperti akurasi, presis
 
 ---
 
-## 📌 Data Understanding
+## Data Understanding
 
 Dataset yang digunakan berasal dari Kaggle: [https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download]
 
@@ -54,7 +54,7 @@ Dataset terdiri dari 569 baris dan 33 kolom (termasuk ID dan diagnosis).
 
 ---
 
-## 📌 Data Preparation
+## Data Preparation
 
 Langkah-langkah yang dilakukan:
 
@@ -64,13 +64,13 @@ Langkah-langkah yang dilakukan:
 4. **Feature scaling** menggunakan **StandardScaler** karena sebagian besar model ML sensitif terhadap skala data.
 5. **Split data** menjadi 80% train dan 20% test set untuk evaluasi model.
 
-📌 *Alasan:*
+*Alasan:*
 * Feature scaling penting untuk model seperti Logistic Regression agar konvergen dengan benar.
 * Data split mencegah overfitting dan memungkinkan evaluasi performa model secara objektif.
 
 ---
 
-## 📌 Modeling
+## Modeling
 
 ### **1. K-Nearest Neighbors (KNN)**
 
@@ -102,7 +102,7 @@ Langkah-langkah yang dilakukan:
 
 ---
 
-## 📌 Evaluation
+## Evaluation
 
 Metrik evaluasi:
 
