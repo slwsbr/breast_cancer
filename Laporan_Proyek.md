@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/105fde6c-43fc-407a-99f0-39f0b6b5def9)# Laporan Proyek Machine Learning - Salwa Sabira
+# Laporan Proyek Machine Learning - Salwa Sabira
 
 ## Domain Proyek
 
@@ -33,7 +33,7 @@ Kedua model akan diuji dan dievaluasi menggunakan metrik seperti akurasi, presis
 
 ## Data Understanding
 
-Dataset yang digunakan berasal dari Kaggle: [https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download]
+Dataset yang digunakan adalah **Breast Cancer Wisconsin Diagnostic Dataset** yang diambil dari [https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download]  dan tersedia juga secara publik dari [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29). Dataset ini berisi fitur-fitur hasil pemeriksaan kanker payudara dari gambar digital dari aspirasi jarum halus (fine needle aspirate/FNA).
 
 ### **Jumlah dan Struktur Data**
 
@@ -41,11 +41,12 @@ Dataset terdiri dari 569 baris dan 33 kolom (termasuk ID dan diagnosis).
 
 ### **Fitur**
 
-* **ID**: Identifikasi unik pasien (dihapus karena tidak relevan).
-* **Diagnosis**: Target klasifikasi: M (malignant) atau B (benign).
-* **30 fitur numerik** hasil ekstraksi dari gambar biopsi digital:
-
-  * radius\_mean, texture\_mean, perimeter\_mean, area\_mean, dll.
+* `id`: Nomor identifikasi sampel.
+* `diagnosis`: Diagnosis dari tumor, "M" untuk malignan dan "B" untuk benign.
+* `radius_mean`: Rata-rata jarak dari pusat ke titik-titik batas.
+* `texture_mean`: Variasi dalam tingkat abu-abu.
+* `perimeter_mean`, `area_mean`, `smoothness_mean`, `compactness_mean`, `concavity_mean`, `concave points_mean`, `symmetry_mean`, `fractal_dimension_mean`: Statistik dari bentuk dan ukuran sel.
+* Fitur lain dengan akhiran `_se` dan `_worst` merepresentasikan standar error dan nilai maksimum dari fitur-fitur tersebut.
 
 ### **Visualisasi Data dan EDA**
 
@@ -128,5 +129,4 @@ Model **KNN**, meskipun performanya cukup baik dengan akurasi **96.49%**, tetap 
 ### **Model Terbaik**
 
 Berdasarkan metrik evaluasi yang digunakan dan hasil yang diperoleh, **Logistic Regression** dipilih sebagai model terbaik untuk sistem deteksi dini kanker payudara karena mampu memberikan prediksi yang akurat dan konsisten.
-
 
