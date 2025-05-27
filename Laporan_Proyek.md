@@ -7,7 +7,7 @@ Kanker payudara merupakan salah satu penyebab utama kematian akibat kanker pada 
 Menurut World Health Organization (WHO), sekitar 2,3 juta perempuan didiagnosis dengan kanker payudara pada tahun 2020 \[1]. Oleh karena itu, model prediksi berbasis machine learning yang cepat dan akurat dapat menjadi alat bantu bagi tenaga medis dalam pengambilan keputusan klinis.
 
 **Referensi:**
-\[1] World Health Organization. (2021). *Breast cancer*. Retrieved from [https://www.who.int/news-room/fact-sheets/detail/breast-cancer](https://www.who.int/news-room/fact-sheets/detail/breast-cancer)
+\[1] World Health Organization. (2021). *Breast cancer*. diambil dari [https://www.who.int/news-room/fact-sheets/detail/breast-cancer](https://www.who.int/news-room/fact-sheets/detail/breast-cancer)
 
 ---
 
