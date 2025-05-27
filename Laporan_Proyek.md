@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Salwa Sabira
+![image](https://github.com/user-attachments/assets/105fde6c-43fc-407a-99f0-39f0b6b5def9)# Laporan Proyek Machine Learning - Salwa Sabira
 
 ## Domain Proyek
 
@@ -102,23 +102,31 @@ Langkah-langkah yang dilakukan:
 
 ---
 
-## Evaluation
 
-Metrik evaluasi:
+## **Evaluation**
 
-* **Akurasi**: persentase prediksi benar.
-* **Precision**: proporsi positif yang diprediksi benar.
-* **Recall**: proporsi kasus positif yang berhasil dideteksi (penting dalam medis!).
-* **F1-Score**: harmoni antara precision dan recall.
+### **Metrik Evaluasi yang Digunakan:**
 
-### Hasil evaluasi :
+* **Accuracy**: Proporsi prediksi benar dari keseluruhan data. Metrik ini memberikan gambaran umum seberapa sering model memberikan prediksi yang benar.
+* **Precision**: Proporsi prediksi positif yang benar-benar positif. Metrik ini penting ketika biaya false positive tinggi.
+* **Recall**: Proporsi data positif yang berhasil dikenali. Recall penting ketika biaya false negative tinggi, seperti pada kasus kanker.
+* **F1-Score**: Rata-rata harmonik dari precision dan recall. Cocok digunakan saat diperlukan keseimbangan antara precision dan recall.
 
-| Model               | Akurasi  | Precision | Recall  | F1-Score  |
-| ------------------- | -------  | --------- | ------  | --------  |
-| Logistic Regression | 99.12%   | 99.31%    | 98.84%  | 99.06%    |
-|KNN                  | 96.49%   | 96.27%    | 96.27%  | 96.27%    |
+### **Hasil Evaluasi Model**
+
+| Model               | Akurasi | Precision | Recall | F1-Score |
+| ------------------- | ------- | --------- | ------ | -------- |
+| Logistic Regression | 99.12%  | 99.31%    | 98.84% | 99.06%   |
+| KNN                 | 96.49%  | 96.27%    | 96.27% | 96.27%   |
+
+### **Interpretasi Hasil**
+
+Model **Logistic Regression** menunjukkan performa yang lebih tinggi dibandingkan model KNN di semua metrik evaluasi. Dengan akurasi sebesar **99.12%**, precision **99.31%**, recall **98.84%**, dan F1-score **99.06%**, model ini sangat efektif dalam mengklasifikasi tumor dengan risiko kesalahan yang sangat rendah.
+
+Model **KNN**, meskipun performanya cukup baik dengan akurasi **96.49%**, tetap berada di bawah Logistic Regression. Kelemahan KNN dapat muncul karena sensitif terhadap data outlier dan performa prediksi yang lambat.
 
 ### **Model Terbaik**
 
-Berdasarkan hasil evaluasi, **Logistic Regression** memiliki performa lebih tinggi dari KNN. Oleh karena itu, Logistic Regression dipilih sebagai model terbaik untuk digunakan dalam sistem deteksi dini kanker payudara.
+Berdasarkan metrik evaluasi yang digunakan dan hasil yang diperoleh, **Logistic Regression** dipilih sebagai model terbaik untuk sistem deteksi dini kanker payudara karena mampu memberikan prediksi yang akurat dan konsisten.
+
 
