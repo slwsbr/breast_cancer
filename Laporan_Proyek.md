@@ -111,7 +111,7 @@ Metrik evaluasi:
 * **Recall**: proporsi kasus positif yang berhasil dideteksi (penting dalam medis!).
 * **F1-Score**: harmoni antara precision dan recall.
 
-### Hasil evaluasi (contoh):
+### Hasil evaluasi :
 
 | Model               | Akurasi  | Precision | Recall  | F1-Score  |
 | ------------------- | -------  | --------- | ------  | --------  |
