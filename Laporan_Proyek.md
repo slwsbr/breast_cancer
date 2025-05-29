@@ -35,6 +35,8 @@ Kedua model dievaluasi menggunakan metrik klasifikasi serta dilakukan hyperparam
 Dataset yang digunakan adalah **Breast Cancer Wisconsin Diagnostic Dataset** yang diambil dari:
 https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download
 
+Dataset ini juga dapat ditemukan di UCI Machine Learning Repository: https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29
+
 Dataset ini berisi fitur-fitur hasil pemeriksaan kanker payudara dari gambar digital aspirasi jarum halus (FNA).
 
 - Jumlah data: 569 baris dan 33 kolom (termasuk ID dan diagnosis).
@@ -73,31 +75,55 @@ Langkah-langkah preprocessing:
 
 ## Modeling
 
-### 1. K-Nearest Neighbors (KNN)
+Dua algoritma machine learning yang digunakan dalam proyek ini adalah **K-Nearest Neighbors (KNN)** dan **Logistic Regression**.
 
-KNN adalah algoritma klasifikasi berbasis instance-based learning. Ia memprediksi kelas suatu data baru dengan:
+---
 
-- Menghitung jarak ke seluruh data latih.
-- Memilih *k* tetangga terdekat.
-- Menggunakan mayoritas voting untuk menentukan kelas.
+#### **1. K-Nearest Neighbors (KNN)**
 
-**Hyperparameter penting:**
-- `n_neighbors`: jumlah tetangga. Terlalu kecil → overfit, terlalu besar → underfit.
-- `weights`: `'uniform'` (sama rata) vs `'distance'` (tetangga dekat lebih berpengaruh).
-- `metric`: jenis jarak, misalnya `'euclidean'`, `'manhattan'`, `'minkowski'`.
+KNN adalah algoritma klasifikasi berbasis instance-based learning yang tidak melakukan pelatihan eksplisit. Saat memprediksi kelas untuk suatu data baru, algoritma ini:
 
-### 2. Logistic Regression
+* Menghitung jarak antara data tersebut dengan seluruh data latih.
+* Memilih *k* tetangga terdekat berdasarkan jarak tersebut.
+* Menentukan kelas berdasarkan mayoritas kelas dari tetangga terdekat.
 
-Logistic Regression adalah model linier untuk klasifikasi biner. Ia menghitung probabilitas kelas positif menggunakan fungsi sigmoid:
-  
-$$
-P(y=1|x) = \frac{1}{1 + e^{-z}} \quad \text{dengan} \quad z = w^Tx + b
-$$
+**Hyperparameter penting yang memengaruhi performa KNN:**
 
-**Hyperparameter penting:**
-- `C`: tingkat regularisasi. Semakin kecil → semakin kuat regularisasi (mencegah overfitting).
-- `penalty`: jenis regularisasi (`'l2'` atau `'l1'`).
-- `solver`: metode optimasi, seperti `'liblinear'` atau `'lbfgs'`.
+* `n_neighbors`: menentukan jumlah tetangga terdekat yang akan dipertimbangkan. Nilai terlalu kecil (misal 1 atau 3) bisa menyebabkan model terlalu sensitif terhadap noise (*overfitting*), sedangkan nilai terlalu besar bisa membuat prediksi terlalu umum (*underfitting*).
+
+* `weights`: menentukan bobot kontribusi tetangga.
+
+  * `'uniform'`: semua tetangga memiliki bobot yang sama.
+  * `'distance'`: tetangga yang lebih dekat memiliki bobot lebih besar, sehingga pengaruhnya terhadap prediksi lebih besar. Biasanya memberikan hasil yang lebih baik, terutama jika data tersebar tidak merata.
+
+* `metric`: jenis jarak yang digunakan untuk mengukur kedekatan, seperti:
+
+  * `'euclidean'`: jarak lurus antar titik.
+  * `'manhattan'`: jarak berdasarkan sumbu koordinat (grid-like).
+  * `'minkowski'`: generalisasi dari Euclidean dan Manhattan.
+
+Pemilihan metrik yang sesuai penting untuk mencerminkan struktur data yang sebenarnya.
+
+---
+
+#### **2. Logistic Regression**
+
+Logistic Regression adalah model linier untuk klasifikasi biner yang memetakan input ke probabilitas kelas menggunakan fungsi **sigmoid**. Probabilitas ini kemudian digunakan untuk menentukan kelas akhir berdasarkan ambang batas (biasanya 0.5).
+
+**Hyperparameter penting yang memengaruhi performa Logistic Regression:**
+
+* `C`: parameter regularisasi yang mengontrol seberapa besar model "dihukum" karena kompleksitasnya.
+
+  * Nilai **C kecil** → regularisasi kuat → mencegah overfitting, tetapi bisa mengurangi akurasi.
+  * Nilai **C besar** → regularisasi lemah → model lebih bebas, tapi bisa overfit terhadap data latih.
+
+* `penalty`: jenis regularisasi yang diterapkan:
+
+  * `'l2'` (Ridge): mengurangi bobot besar secara merata, menjaga semua fitur tetap berkontribusi.
+  * `'l1'` (Lasso): mendorong bobot tertentu menjadi nol, sehingga bisa digunakan untuk seleksi fitur otomatis.
+
+Kombinasi `C` dan `penalty` sangat memengaruhi trade-off antara bias dan varians. Pemilihan nilai yang tepat membantu model menjadi lebih generalisasi dan tidak overfitting.
+
 
 ### Hyperparameter Tuning
 
