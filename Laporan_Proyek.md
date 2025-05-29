@@ -26,7 +26,7 @@ Dua pendekatan yang digunakan:
 - **K-Nearest Neighbors (KNN)**: Algoritma berbasis kedekatan jarak antar data.
 - **Logistic Regression (LogReg)**: Algoritma linier yang menghitung probabilitas klasifikasi biner.
 
-Kedua model dievaluasi menggunakan metrik klasifikasi serta dilakukan **hyperparameter tuning** untuk meningkatkan performa model.
+Kedua model dievaluasi menggunakan metrik klasifikasi serta dilakukan hyperparameter tuning untuk meningkatkan performa model.
 
 ---
 
@@ -39,8 +39,8 @@ Dataset ini berisi fitur-fitur hasil pemeriksaan kanker payudara dari gambar dig
 
 - Jumlah data: 569 baris dan 33 kolom (termasuk ID dan diagnosis).
 - Target: `diagnosis` (M = malignan, B = benign)
-- Tidak ditemukan **missing values**.
-- Ditemukan **1 duplikat**, dan telah dihapus pada tahap *Data Preparation*.
+- Tidak ditemukan missing values.
+- Ditemukan 1 duplikat, dan telah dihapus pada tahap *Data Preparation*.
 
 ### Fitur Utama:
 - `radius_mean`: Rata-rata jarak dari pusat ke titik batas.
@@ -67,7 +67,7 @@ Langkah-langkah preprocessing:
 4. **Split Data**: Data dibagi menjadi 80% data latih dan 20% data uji.
 5. **Feature Scaling**: Standarisasi menggunakan `StandardScaler` pada fitur numerik.
 
-> Catatan: Scaling dilakukan **setelah** data dibagi untuk menghindari *data leakage*.
+> Catatan: Scaling dilakukan setelah data dibagi untuk menghindari *data leakage*.
 
 ---
 
@@ -79,7 +79,7 @@ KNN adalah algoritma klasifikasi berbasis instance-based learning. Ia memprediks
 
 - Menghitung jarak ke seluruh data latih.
 - Memilih *k* tetangga terdekat.
-- Menggunakan **mayoritas voting** untuk menentukan kelas.
+- Menggunakan mayoritas voting untuk menentukan kelas.
 
 **Hyperparameter penting:**
 - `n_neighbors`: jumlah tetangga. Terlalu kecil → overfit, terlalu besar → underfit.
