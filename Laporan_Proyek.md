@@ -166,9 +166,9 @@ Dilakukan dengan `GridSearchCV` 5-fold cross-validation.
 
 ## Interpretasi Hasil
 
-Model **Logistic Regression** menunjukkan performa yang lebih tinggi dibandingkan **KNN** di semua metrik evaluasi. Dengan akurasi sebesar **99.12%**, precision **99.31%**, recall **98.84%**, dan F1-score **99.06%**, model ini sangat efektif untuk klasifikasi tumor dengan risiko kesalahan yang sangat rendah.
+Model **Logistic Regression** menunjukkan performa yang lebih tinggi dibandingkan KNN di semua metrik evaluasi. Dengan akurasi sebesar **99.12%**, precision **99.31%**, recall **98.84%**, dan F1-score **99.06%**, model ini sangat efektif untuk klasifikasi tumor dengan risiko kesalahan yang sangat rendah.
 
-Sementara itu, model **KNN** meskipun cukup baik, performanya berada di bawah Logistic Regression. Kekurangan utama KNN terletak pada sensitivitas terhadap outlier dan kompleksitas saat prediksi data baru.
+Sementara itu, model KNN meskipun cukup baik, performanya berada di bawah Logistic Regression. Kekurangan utama KNN terletak pada sensitivitas terhadap outlier dan kompleksitas saat prediksi data baru.
 
 ---
 
