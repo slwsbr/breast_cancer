@@ -152,7 +152,7 @@ Dilakukan dengan `GridSearchCV` 5-fold cross-validation.
 
 | Model              | Akurasi | Precision | Recall | F1-Score |
 |--------------------|--------:|----------:|-------:|---------:|
-| Logistic Regression| 97.37%  | 97.37%    | 97.37% | 97.37%   |
+| Logistic Regression| 97.37%  | 97.37%    | 97.37% | 97.36%   |
 | KNN (default)      | 94.74%  | 94.74%     | 94.74%  | 94.74%    |
 
 ### Hasil Setelah Tuning:
