@@ -9,124 +9,143 @@ Menurut World Health Organization (WHO), sekitar 2,3 juta perempuan didiagnosis 
 **Referensi:**
 \[1] World Health Organization. (2021). *Breast cancer*. diambil dari [https://www.who.int/news-room/fact-sheets/detail/breast-cancer](https://www.who.int/news-room/fact-sheets/detail/breast-cancer)
 
----
 
 ## Business Understanding
 
 ### Problem Statements
-
-1. Bagaimana cara mengklasifikasikan jenis tumor (jinak atau ganas) berdasarkan fitur-fitur karakteristik sel dari dataset Breast Cancer Wisconsin?
-2. Seberapa akurat model machine learning dalam mendeteksi kanker payudara berdasarkan data tersebut?
+- Bagaimana cara mengklasifikasikan jenis tumor (jinak atau ganas) berdasarkan fitur-fitur karakteristik sel dari dataset Breast Cancer Wisconsin?
+- Seberapa akurat model machine learning dalam mendeteksi kanker payudara berdasarkan data tersebut?
 
 ### Goals
-
-1. Mengembangkan model klasifikasi untuk memprediksi jenis tumor dengan akurasi tinggi.
-2. Menilai performa model menggunakan metrik evaluasi seperti akurasi, precision, recall, dan F1-score.
+- Mengembangkan model klasifikasi untuk memprediksi jenis tumor dengan akurasi tinggi.
+- Menilai performa model menggunakan metrik evaluasi seperti akurasi, precision, recall, dan F1-score.
 
 ### Solution Statements
-Untuk mencapai tujuan tersebut, dua pendekatan digunakan:
-1. **K-Nearest Neighbors (KNN):** Algoritma berbasis kedekatan jarak antar data.
-2. **Logistic Regression (LogReg):** Algoritma linier yang menghitung probabilitas klasifikasi biner.
-Kedua model akan diuji dan dievaluasi menggunakan metrik seperti akurasi, presisi, recall, dan F1-score. Hyperparameter tuning dilakukan untuk meningkatkan performa model.
+Dua pendekatan yang digunakan:
+
+- **K-Nearest Neighbors (KNN)**: Algoritma berbasis kedekatan jarak antar data.
+- **Logistic Regression (LogReg)**: Algoritma linier yang menghitung probabilitas klasifikasi biner.
+
+Kedua model dievaluasi menggunakan metrik klasifikasi serta dilakukan **hyperparameter tuning** untuk meningkatkan performa model.
 
 ---
 
 ## Data Understanding
 
-Dataset yang digunakan adalah **Breast Cancer Wisconsin Diagnostic Dataset** yang diambil dari [https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download]  dan tersedia juga secara publik dari [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29). Dataset ini berisi fitur-fitur hasil pemeriksaan kanker payudara dari gambar digital dari aspirasi jarum halus (fine needle aspirate/FNA).
+Dataset yang digunakan adalah **Breast Cancer Wisconsin Diagnostic Dataset** yang diambil dari:
+https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download
 
-### **Jumlah dan Struktur Data**
+Dataset ini berisi fitur-fitur hasil pemeriksaan kanker payudara dari gambar digital aspirasi jarum halus (FNA).
 
-Dataset terdiri dari 569 baris dan 33 kolom (termasuk ID dan diagnosis).
+- Jumlah data: 569 baris dan 33 kolom (termasuk ID dan diagnosis).
+- Target: `diagnosis` (M = malignan, B = benign)
+- Tidak ditemukan **missing values**.
+- Ditemukan **1 duplikat**, dan telah dihapus pada tahap *Data Preparation*.
 
-### **Fitur**
+### Fitur Utama:
+- `radius_mean`: Rata-rata jarak dari pusat ke titik batas.
+- `texture_mean`: Variasi intensitas piksel.
+- `perimeter_mean`, `area_mean`, `smoothness_mean`, dll.
+- Fitur dengan akhiran `_se` = standard error.
+- Fitur dengan akhiran `_worst` = nilai maksimum dari masing-masing fitur.
 
-* `id`: Nomor identifikasi sampel.
-* `diagnosis`: Diagnosis dari tumor, "M" untuk malignan dan "B" untuk benign.
-* `radius_mean`: Rata-rata jarak dari pusat ke titik-titik batas.
-* `texture_mean`: Variasi dalam tingkat abu-abu.
-* `perimeter_mean`, `area_mean`, `smoothness_mean`, `compactness_mean`, `concavity_mean`, `concave points_mean`, `symmetry_mean`, `fractal_dimension_mean`: Statistik dari bentuk dan ukuran sel.
-* Fitur lain dengan akhiran `_se` dan `_worst` merepresentasikan standar error dan nilai maksimum dari fitur-fitur tersebut.
+### Distribusi Target:
+- **Benign**: 62%
+- **Malignant**: 38%
 
-### **Visualisasi Data dan EDA**
-
-* Distribusi kelas target: sekitar 62% benign dan 38% malignant.
-* Visualisasi distribusi tiap fitur dilakukan menggunakan histogram.
+Visualisasi awal dilakukan dengan histogram untuk masing-masing fitur guna melihat pola distribusi dan potensi perbedaan antara kelas.
 
 ---
 
 ## Data Preparation
 
-Langkah-langkah yang dilakukan:
+Langkah-langkah preprocessing:
 
-1. **Drop kolom yang tidak relevan**, seperti `id` dan `Unnamed: 32`.
-2. **Menghapus duplikat.**
-3. **Label encoding** untuk variabel target: `M` → 1 (ganas), `B` → 0 (jinak).
-4. **Feature scaling** menggunakan **StandardScaler** karena sebagian besar model ML sensitif terhadap skala data.
-5. **Split data** menjadi 80% train dan 20% test set untuk evaluasi model.
+1. **Drop kolom tidak relevan**: `id`, `Unnamed: 32`.
+2. **Menghapus duplikat**: Ditemukan 1 baris duplikat dan dihapus.
+3. **Label Encoding**: `M` → 1 (malignan), `B` → 0 (benign).
+4. **Split Data**: Data dibagi menjadi 80% data latih dan 20% data uji.
+5. **Feature Scaling**: Standarisasi menggunakan `StandardScaler` pada fitur numerik.
 
-*Alasan:*
-* Feature scaling penting untuk model seperti Logistic Regression agar konvergen dengan benar.
-* Data split mencegah overfitting dan memungkinkan evaluasi performa model secara objektif.
+> Catatan: Scaling dilakukan **setelah** data dibagi untuk menghindari *data leakage*.
 
 ---
 
 ## Modeling
 
-### **1. K-Nearest Neighbors (KNN)**
+### 1. K-Nearest Neighbors (KNN)
 
-* Model KNN digunakan dengan parameter default awal `n_neighbors=5`.
-* Dilakukan tuning hyperparameter menggunakan GridSearchCV:
+KNN adalah algoritma klasifikasi berbasis instance-based learning. Ia memprediksi kelas suatu data baru dengan:
 
-  * `n_neighbors`: \[3, 5, 7, 9, 11]
-  * `weights`: \['uniform', 'distance']
-  * `metric`: \['euclidean', 'manhattan', 'minkowski']
+- Menghitung jarak ke seluruh data latih.
+- Memilih *k* tetangga terdekat.
+- Menggunakan **mayoritas voting** untuk menentukan kelas.
 
-### **2. Logistic Regression (LogReg)**
+**Hyperparameter penting:**
+- `n_neighbors`: jumlah tetangga. Terlalu kecil → overfit, terlalu besar → underfit.
+- `weights`: `'uniform'` (sama rata) vs `'distance'` (tetangga dekat lebih berpengaruh).
+- `metric`: jenis jarak, misalnya `'euclidean'`, `'manhattan'`, `'minkowski'`.
 
-* Digunakan model LogisticRegression dari `sklearn.linear_model`.
-* Hyperparameter tuning dilakukan:
+### 2. Logistic Regression
 
-  * `C`: \[0.01, 0.1, 1, 10, 100] (regularisasi)
-  * `solver`: \['liblinear', 'lbfgs']
+Logistic Regression adalah model linier untuk klasifikasi biner. Ia menghitung probabilitas kelas positif menggunakan fungsi sigmoid:
+  
+$$
+P(y=1|x) = \frac{1}{1 + e^{-z}} \quad \text{dengan} \quad z = w^Tx + b
+$$
 
-### **Kelebihan dan Kekurangan**
+**Hyperparameter penting:**
+- `C`: tingkat regularisasi. Semakin kecil → semakin kuat regularisasi (mencegah overfitting).
+- `penalty`: jenis regularisasi (`'l2'` atau `'l1'`).
+- `solver`: metode optimasi, seperti `'liblinear'` atau `'lbfgs'`.
 
-* **KNN**:
+### Hyperparameter Tuning
 
-  * (+) Mudah diimplementasikan, interpretasi intuitif.
-  * (-) Lambat saat prediksi, sensitif terhadap fitur yang tidak diskalakan.
-* **Logistic Regression**:
+Dilakukan dengan `GridSearchCV` 5-fold cross-validation.
 
-  * (+) Cepat, interpretatif, cocok untuk klasifikasi biner.
-  * (-) Cenderung underfit pada data non-linear.
+- **KNN**:
+  - `n_neighbors`: [3, 5, 7, 9, 11]
+  - `weights`: ['uniform', 'distance']
+  - `metric`: ['euclidean', 'manhattan', 'minkowski']
+
+- **Logistic Regression**:
+  - `C`: [0.01, 0.1, 1, 10, 100]
+  - `solver`: ['liblinear', 'lbfgs']
 
 ---
 
+## Evaluation
 
-## **Evaluation**
+### Metrik Evaluasi:
+- **Accuracy**: proporsi prediksi benar dari seluruh data.
+- **Precision**: proporsi positif yang benar-benar positif.
+- **Recall**: proporsi data positif yang berhasil dikenali.
+- **F1-Score**: rata-rata harmonik dari precision dan recall.
 
-### **Metrik Evaluasi yang Digunakan:**
+### Hasil Sebelum Tuning:
 
-* **Accuracy**: Proporsi prediksi benar dari keseluruhan data. Metrik ini memberikan gambaran umum seberapa sering model memberikan prediksi yang benar.
-* **Precision**: Proporsi prediksi positif yang benar-benar positif. Metrik ini penting ketika biaya false positive tinggi.
-* **Recall**: Proporsi data positif yang berhasil dikenali. Recall penting ketika biaya false negative tinggi, seperti pada kasus kanker.
-* **F1-Score**: Rata-rata harmonik dari precision dan recall. Cocok digunakan saat diperlukan keseimbangan antara precision dan recall.
+| Model              | Akurasi | Precision | Recall | F1-Score |
+|--------------------|--------:|----------:|-------:|---------:|
+| Logistic Regression| 97.37%  | 97.37%    | 97.37% | 97.37%   |
+| KNN (default)      | 94.74%  | 94.74%     | 94.74%  | 94.74%    |
 
-### **Hasil Evaluasi Model**
+### Hasil Setelah Tuning:
 
-| Model               | Akurasi | Precision | Recall | F1-Score |
-| ------------------- | ------- | --------- | ------ | -------- |
-| Logistic Regression | 99.12%  | 99.31%    | 98.84% | 99.06%   |
-| KNN                 | 96.49%  | 96.27%    | 96.27% | 96.27%   |
+| Model              | Akurasi | Precision | Recall | F1-Score |
+|--------------------|--------:|----------:|-------:|---------:|
+| Logistic Regression| **99.12%** | **99.31%** | **98.84%** | **99.06%** |
+| KNN                | 96.49%  | 96.27%    | 96.27% | 96.27%   |
 
-### **Interpretasi Hasil**
+---
 
-Model **Logistic Regression** menunjukkan performa yang lebih tinggi dibandingkan model KNN di semua metrik evaluasi. Dengan akurasi sebesar **99.12%**, precision **99.31%**, recall **98.84%**, dan F1-score **99.06%**, model ini sangat efektif dalam mengklasifikasi tumor dengan risiko kesalahan yang sangat rendah.
+## Interpretasi Hasil
 
-Model **KNN**, meskipun performanya cukup baik dengan akurasi **96.49%**, tetap berada di bawah Logistic Regression. Kelemahan KNN dapat muncul karena sensitif terhadap data outlier dan performa prediksi yang lambat.
+Model **Logistic Regression** menunjukkan performa yang lebih tinggi dibandingkan **KNN** di semua metrik evaluasi. Dengan akurasi sebesar **99.12%**, precision **99.31%**, recall **98.84%**, dan F1-score **99.06%**, model ini sangat efektif untuk klasifikasi tumor dengan risiko kesalahan yang sangat rendah.
 
-### **Model Terbaik**
+Sementara itu, model **KNN** meskipun cukup baik, performanya berada di bawah Logistic Regression. Kekurangan utama KNN terletak pada sensitivitas terhadap outlier dan kompleksitas saat prediksi data baru.
 
-Berdasarkan metrik evaluasi yang digunakan dan hasil yang diperoleh, **Logistic Regression** dipilih sebagai model terbaik untuk sistem deteksi dini kanker payudara karena mampu memberikan prediksi yang akurat dan konsisten.
+---
 
+## Model Terbaik
+
+Berdasarkan hasil evaluasi, model terbaik untuk deteksi dini kanker payudara adalah **Logistic Regression** karena memberikan performa yang sangat baik, cepat, dan interpretatif. Model ini direkomendasikan untuk digunakan dalam aplikasi deteksi awal kanker payudara.
