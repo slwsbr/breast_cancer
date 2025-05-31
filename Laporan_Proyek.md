@@ -44,18 +44,42 @@ Dataset ini berisi fitur-fitur hasil pemeriksaan kanker payudara dari gambar dig
 - Tidak ditemukan missing values.
 - Ditemukan 1 duplikat, dan telah dihapus pada tahap *Data Preparation*.
 
-### Fitur Utama:
-- `radius_mean`: Rata-rata jarak dari pusat ke titik batas.
-- `texture_mean`: Variasi intensitas piksel.
-- `perimeter_mean`, `area_mean`, `smoothness_mean`, dll.
-- Fitur dengan akhiran `_se` = standard error.
-- Fitur dengan akhiran `_worst` = nilai maksimum dari masing-masing fitur.
+### Uraian Seluruh Fitur:
+
+* `id`: Nomor identifikasi pasien (tidak digunakan dalam analisis).
+* `diagnosis`: Jenis diagnosis (M = Malignant, B = Benign), menjadi target prediksi.
+
+**Fitur-fitur utama** dihasilkan dari tiga kelompok statistik: *mean* (rata-rata), *standard error (SE)*, dan *worst* (nilai maksimum). Fitur-fitur tersebut mencerminkan karakteristik sel kanker berdasarkan citra FNA.
+
+#### Fitur-fitur dengan akhiran `_mean`:
+
+* `radius_mean`: Rata-rata jarak dari pusat massa sel ke batasnya.
+* `texture_mean`: Rata-rata variasi intensitas piksel dalam sel.
+* `perimeter_mean`: Panjang rata-rata keliling kontur sel.
+* `area_mean`: Luas rata-rata area sel.
+* `smoothness_mean`: Ukuran kekhalusan batas sel, dihitung dari perubahan lokal pada panjang kontur.
+* `compactness_mean`: Ukuran kekompakan sel, dihitung sebagai (perimeter² / area) - 1.
+* `concavity_mean`: Derajat cekungan (lekukan) batas sel.
+* `concave points_mean`: Jumlah titik-titik cekungan pada batas sel.
+* `symmetry_mean`: Ukuran simetri sel.
+* `fractal_dimension_mean`: Kompleksitas batas sel berdasarkan dimensi fraktal.
+
+#### Fitur-fitur dengan akhiran `_se` (standard error):
+
+* Mengukur variabilitas lokal dari masing-masing fitur di atas (misal: `radius_se`, `texture_se`, dll.).
+
+#### Fitur-fitur dengan akhiran `_worst`:
+
+* Menunjukkan nilai maksimum dari masing-masing fitur (misal: `radius_worst`, `area_worst`, `concavity_worst`, dll.).
 
 ### Distribusi Target:
-- **Benign**: 62%
-- **Malignant**: 38%
 
-Visualisasi awal dilakukan dengan histogram untuk masing-masing fitur guna melihat pola distribusi dan potensi perbedaan antara kelas.
+* **Benign (jinak)**: 62%
+* **Malignant (ganas)**: 38%
+
+### Visualisasi Awal:
+
+* Visualisasi awal dilakukan menggunakan histogram untuk setiap fitur, guna mengamati distribusi data serta perbedaan pola karakteristik antara tumor benign dan malignant.
 
 ---
 
@@ -135,8 +159,9 @@ Dilakukan dengan `GridSearchCV` 5-fold cross-validation.
   - `metric`: ['euclidean', 'manhattan', 'minkowski']
 
 - **Logistic Regression**:
-  - `C`: [0.01, 0.1, 1, 10, 100]
-  - `solver`: ['liblinear', 'lbfgs']
+  - 'C': [0.01, 0.1, 1, 10]  
+  - 'penalty': ['l1', 'l2']
+  - 'solver': ['liblinear'] 
 
 ---
 
